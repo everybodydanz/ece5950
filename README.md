@@ -35,15 +35,15 @@ bash setup.sh
 
 3. Setup the database...
 
-4. Run the api in a new terminal, and this will open the app in a browser
+4. Run the api...
+
+5. Configure authentication for the ui...
+
+6. Run the ui in a new terminal, and this will open the app in a browser
 
 ~~~
 cd ece5950/ui
 npm start
 ~~~
-
-5. Configure authentication for the ui...
-
-6. Run the ui...
 
 7. Follow the user guide...
