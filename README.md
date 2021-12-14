@@ -6,6 +6,7 @@ Members:
 	Daniel McKee
 
 Follow the guide git.sh to setup/use git on a linux machine (or VM)
+You will need to create a token instead of using your github p/w: https://eddrichjanzzen.github.io/blog/2021/08/29/support-for-password-authentication-removed.html
 
 Run "bash setup.sh" to download everything needed to run the database, api, and ui
 
