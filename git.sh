@@ -58,6 +58,7 @@ git commit -a # all files
 # git status will not show unmerged changes between branches, use this
 git log --branches --not --remotes
 
+# before you push, make sure to generate a token from your github account to use instead of your p/w
 # push this commit upstream to the remote repo (github), it will still be within your non-master branch
 git push origin test_branch # you will be prompted to enter your github credentials
 
@@ -67,7 +68,7 @@ git config --global credential.helper 'cache --timeout==7200'
 # now go into github to see your new branch, and create a pull request to merch the branch into master
 # after merging click to delete branch
 # on your own system, get the updated master branch and delete your local branch
-git checkout master
-git pull origin master
+git checkout main
+git pull origin main
 git branch -d test_branch
 
