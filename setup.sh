@@ -22,6 +22,8 @@ pip install djangorestframework
 
 sudo apt-get install nodejs npm
 # extra stuff for front end
+npm install bootstrap
+npm install react-router-dom
 
 echo Installation complete...
 
