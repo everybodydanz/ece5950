@@ -7,16 +7,11 @@ export class Department extends Component{
         super(props);
 
         this.state={
-            departments:[]
-            /*
-            ,
+            departments:[],
             modalTitle:"",
+            Id:0,
             DepartmentName:"",
-            DepartmentId:0,
-
-            DepartmentIdFilter:"",
-            DepartmentNameFilter:"",
-            departmentsWithoutFilter:[]*/
+            DepartmentState:""
         }
     }
     
@@ -31,18 +26,111 @@ export class Department extends Component{
     componentDidMount(){
         this.refreshList();
     }
+    
+    changeDepartmentName    =(e)=> this.setState({DepartmentName:e.target.value});
+    changeDepartmentState   =(e)=> this.setState({DepartmentState:e.target.value});
+
+    addClick(){
+        this.setState({
+            modalTitle:"Add Department",
+            Id:0,
+            DepartmentName:"",
+            DepartmentState:""
+        });
+    }
+    editClick(item){
+        this.setState({
+            modalTitle:"Edit Department",
+            Id:item.Id,
+            DepartmentName:item.name,
+            DepartmentState:item.state
+        });
+    }
+
+    createClick(){
+        fetch(variables.API_URL+'cities/',{
+            method:'POST',
+            headers:{
+                'Accept':'application/json',
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                name:this.state.DepartmentName,
+                state:this.state.DepartmentState
+            })
+        })
+        .then(res=>res.json())
+        .then((result)=>{
+            //alert(result);
+            this.refreshList();
+        },(error)=>{
+            alert('Failed');
+        })
+    }
+
+    updateClick(id){
+        fetch(variables.API_URL+'cities/'+id+'/',{
+            method:'PUT',
+            headers:{
+                'Accept':'application/json',
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                id:this.state.Id,
+                name:this.state.DepartmentName,
+                state:this.state.DepartmentState
+            })
+        })
+        .then(res=>res.json())
+        .then((result)=>{
+            //alert(result);
+            this.refreshList();
+        },(error)=>{
+            alert('Failed');
+        })
+    }
+
+    deleteClick(id){
+        if(window.confirm('Are you sure?')){
+        fetch(variables.API_URL+'cities/'+id+'/',{
+            method:'DELETE',
+            headers:{
+                'Accept':'application/json',
+                'Content-Type':'application/json'
+            }
+        })
+        .then(res=>res.json())
+        .then((result)=>{
+            //alert(result);
+            this.refreshList();
+        },(error)=>{
+            alert('Failed');
+        })
+        }
+    }
 
     render(){
         const {
-            departments/*,
+            departments,
             modalTitle,
-            DepartmentId,
-            DepartmentName*/
+            Id,
+            DepartmentName,
+            DepartmentState
         }=this.state;
         
         return(
 <div>
     {/*<h3>This is Department page</h3>*/}
+    <button type="button"
+    className="btn btn-primary m-2 float-end"
+    data-bs-toggle="modal"
+    data-bs-target="#editModal"
+    onClick={()=>this.addClick()}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-plus" viewBox="0 0 16 16">
+          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+        </svg>
+    </button>
+    
     <table className="table table-striped">
     <thead>
     <tr>
@@ -69,13 +157,19 @@ export class Department extends Component{
                 <td>{item.name}</td>
                 <td>{item.state}</td>
                 <td>
-                    <button type="button" className="btn btn_light mr-1">
+                    <button type="button"
+                    className="btn btn-light mr-1"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editModal"
+                    onClick={()=>this.editClick(item)}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-tools" viewBox="0 0 16 16">
                             <path d="M1 0 0 1l2.2 3.081a1 1 0 0 0 .815.419h.07a1 1 0 0 1 .708.293l2.675 2.675-2.617 2.654A3.003 3.003 0 0 0 0 13a3 3 0 1 0 5.878-.851l2.654-2.617.968.968-.305.914a1 1 0 0 0 .242 1.023l3.356 3.356a1 1 0 0 0 1.414 0l1.586-1.586a1 1 0 0 0 0-1.414l-3.356-3.356a1 1 0 0 0-1.023-.242L10.5 9.5l-.96-.96 2.68-2.643A3.005 3.005 0 0 0 16 3c0-.269-.035-.53-.102-.777l-2.14 2.141L12 4l-.364-1.757L13.777.102a3 3 0 0 0-3.675 3.68L7.462 6.46 4.793 3.793a1 1 0 0 1-.293-.707v-.071a1 1 0 0 0-.419-.814L1 0zm9.646 10.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708zM3 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026L3 11z"/>
                         </svg>
                     </button>
                     
-                    <button type="button" className="btn btn_light mr-1">
+                    <button type="button"
+                    className="btn btn-light mr-1"
+                    onClick={()=>this.deleteClick(item.id)}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash-fill" viewBox="0 0 16 16">
                             <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
                         </svg>
@@ -85,6 +179,49 @@ export class Department extends Component{
         )}
     </tbody>
     </table>
+
+<div className="modal fade" id="editModal" tabIndex="-1" aria-hidden="true">
+<div className="modal-dialog modal-lg modal-dialog-centered">
+<div className="modal-content">
+    <div className="modal-header">
+        <h5 className="modal-title">{modalTitle}</h5>
+        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+    </div>
+
+    <div className="modal-body">
+        <div className="input-group mb-3">
+        <span className="input-group-text">Department</span>
+        <input type="text" className="form-control"
+        value={DepartmentName}
+        onChange={this.changeDepartmentName}/>
+        </div>
+        
+        <div className="input-group mb-3">
+        <span className="input-group-text">state?</span>
+        <input type="text" className="form-control"
+        value={DepartmentState}
+        onChange={this.changeDepartmentState}/>
+        </div>
+
+        {Id===0?
+        <button type="button"
+        className="btn btn-primary float-start"
+        onClick={()=>this.createClick()}
+        >Create</button>
+        :null}
+
+        {Id!==0?
+        <button type="button"
+        className="btn btn-primary float-start"
+        onClick={()=>this.updateClick()}
+        >Update</button>
+        :null}
+    </div>
+
+</div>
+</div> 
+</div>
+
 </div>
         )
     }
