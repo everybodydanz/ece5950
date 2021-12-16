@@ -10,11 +10,12 @@ sudo apt install python3-pip
 # python-div for mysql
 
 # mysql
-sudo pip install pymysql
+pip install pymysql
 
 # django rest framework
 pip install django
 pip install djangorestframework
+pip install django-cors-headers
 # note sure if this is needed
 # sudo apt install python3-django
 
@@ -22,8 +23,8 @@ pip install djangorestframework
 
 sudo apt-get install nodejs npm
 # extra stuff for front end
-npm install bootstrap
-npm install react-router-dom
+# npm install bootstrap
+# npm install react-router-dom
 
 echo Installation complete...
 
