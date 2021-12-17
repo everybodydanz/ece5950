@@ -41,7 +41,7 @@ export class Department extends Component{
     editClick(item){
         this.setState({
             modalTitle:"Edit Department",
-            Id:item.Id,
+            Id:item.id,
             DepartmentName:item.name,
             DepartmentState:item.state
         });
@@ -68,22 +68,22 @@ export class Department extends Component{
         })
     }
 
-    updateClick(id){
-        fetch(variables.API_URL+'cities/'+id+'/',{
+    updateClick(){
+        fetch(variables.API_URL+'cities/'+this.state.Id+'/',{
             method:'PUT',
             headers:{
                 'Accept':'application/json',
                 'Content-Type':'application/json'
             },
             body:JSON.stringify({
-                id:this.state.Id,
+                //id:this.state.Id, //TODO remove
                 name:this.state.DepartmentName,
                 state:this.state.DepartmentState
             })
         })
         .then(res=>res.json())
         .then((result)=>{
-            //alert(result);
+            console.log(result);
             this.refreshList();
         },(error)=>{
             alert('Failed');
@@ -99,12 +99,11 @@ export class Department extends Component{
                 'Content-Type':'application/json'
             }
         })
-        .then(res=>res.json())
         .then((result)=>{
-            //alert(result);
+            console.log(result);
+            if(result.status!==204){
+            alert('Failed')};
             this.refreshList();
-        },(error)=>{
-            alert('Failed');
         })
         }
     }
